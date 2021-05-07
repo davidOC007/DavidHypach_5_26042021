@@ -1,0 +1,19 @@
+body{
+    font-family: Raleway, sans-serif;
+    margin: 0;   
+}
+
+.title {
+    font-size: 36px;
+	text-align: center;
+}
+
+.emptycartmsg {
+    color : red;
+    text-align: center;
+}
+
+#invalid_firstname {
+    color : red;
+    font-weight: bold;
+}
