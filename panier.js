@@ -64,7 +64,7 @@ const totalPrice = totalSum.reduce(reducer, 0);
 let orderTotal = document.getElementsByClassName("totalprice")[0];
 orderTotal.innerText = "Total de votre commande : " + totalPrice + ".00 €";
 
-// Formulaire
+// Traitement du formulaire
 
 let firstName = document.getElementById("firstName");
 let lastName = document.getElementById("lastName");

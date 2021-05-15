@@ -1,4 +1,4 @@
-// Récupération des données via l'API - requête fetch
+// Récupération des données via l'API - Requête fetch
 
 const camera = document.getElementById("cameras");
 let productList = "http://localhost:3000/api/cameras";

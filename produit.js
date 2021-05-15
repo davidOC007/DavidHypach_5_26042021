@@ -6,7 +6,7 @@ const attributes = document.getElementById("produit")
 
 const productList = 'http://localhost:3000/api/cameras'
 
-// Requête fetch et récupération de l'ID du produit - Affichage du produit dans la page
+// Requête fetch et récupération de l'ID de l'article - Affichage du produit dans la page
 
 fetch(productList + '/' + itemId)
     .then(response =>
