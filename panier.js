@@ -1,6 +1,12 @@
 const displayCart = document.getElementById("panierachat")
 let cart = JSON.parse(localStorage.getItem("cart"));
 
+// Affichage des produits dans le panier s'il n'est pas vide
+if(cart == null) {
+    displayCart.innerHTML = `
+    <p class="emptycartmsg"> Votre panier de commande est vide. Vous pouvez retourner à l'accueil pour effectuer votre sélection.</p>
+    `;
+} else {
 for (let i = 0; i < cart.length; i++) {
     displayCart.innerHTML += `
             <div class="row m-2 ligne-produit pt-2 border-top border-dark">
@@ -11,58 +17,54 @@ for (let i = 0; i < cart.length; i++) {
                     <h2 class="mb-2">${cart[i].name}</h2>
                     <p class="prixProduitPanier" id='${cart[i].name}total'><strong>Prix unitaire : <span class='chiffre-prix'>${cart[i].price.toFixed(2)} €</span></strong></p>    
                     <i class="removeProduct fas fa-trash fa" data-id="${i}"></i>
-                    </div>
-                   
+                    </div>             
             </div>     
                
         `;
-
+    }
 };
 
 
-// FONCTION POUR VIDER LE PANIER ET RETOUR A L'ACCUEIL
-let emptyCart = document.getElementById("viderpanier");
+// Fonction pour vider le panier
+let emptyCart = document.getElementById("empty");
 emptyCart.addEventListener("click", function(e) {
     localStorage.removeItem("cart");
     document.getElementById("formulaire").style.display = "none";
     displayCart.innerHTML = `
     <p class="emptycartmsg"> Votre panier de commande est vide. Vous pouvez retourner à l'accueil pour effectuer votre sélection.</p>
     `;
-    document.getElementById("viderpanier").style.display = "none";
-    document.getElementById("textcommande").style.display = "none";
+    document.getElementById("empty").style.display = "none";
+    document.getElementById("ordertext").style.display = "none";
 });
 
-// SUPPRESSION D'UN ARTICLE DANS LE PANIER
+// Fonction pour supprimer un article dans le panier
 function removeProduct(id) {
     let camera = cart[id];
     cart.splice(id, 1);
     localStorage.setItem("cart", JSON.stringify(cart));
     window.location.reload();
-    alert("Un article a été supprimé")
+    alert("Un article va être supprimé")
 }
 
 document.querySelectorAll(".removeProduct").forEach(deleteButton => {
     deleteButton.addEventListener('click', () => removeProduct(deleteButton.dataset.id))
 });
 
-// TOTAL DE LA COMMANDE
-let total = [];
+// Total de la commande
+let totalSum = [];
 
-if (cart == null) {} else {
-    for (let j = 0; j < cart.length; j++) {
-        let productPrice =
-            cart[j].price;
-        total.push(productPrice);
-    }
+for (let j = 0; j < cart.length; j++) {
+    let productPrice = cart[j].price;
+    totalSum.push(productPrice);
 }
 
 const reducer = (accumulator, currentValue) => accumulator + currentValue;
-const totalPrice = total.reduce(reducer, 0);
+const totalPrice = totalSum.reduce(reducer, 0);
 
-let prixTotal = document.getElementsByClassName("prix-total")[0];
-prixTotal.innerText = "Total de votre commande : " + totalPrice + ".00 €";
+let orderTotal = document.getElementsByClassName("totalprice")[0];
+orderTotal.innerText = "Total de votre commande : " + totalPrice + ".00 €";
 
-// FORMULAIRE
+// Formulaire
 
 let firstName = document.getElementById("firstName");
 let lastName = document.getElementById("lastName");
@@ -76,7 +78,7 @@ let regexAddress = /[0-9a-zA-Z]{1,3}[a-z ,.'-]+$/;
 let regexCity = /^^[a-zA-Z ,.'-]+$/;
 let regexEmail = /^[a-z0-9._-]+@[a-z0-9.-]{2,}[.][a-z]{2,3}$/;
 
-// CONDITION DE VALIDATION DES CHAMPS DU FORMULAIRE
+// Conditions de validation des champs du formulaire
 form.addEventListener("submit", function(event) {
     if (regexName.test(firstName.value) == false) {
         event.preventDefault();
@@ -99,7 +101,7 @@ form.addEventListener("submit", function(event) {
         event.preventDefault();
         document.getElementById("invalid_email").innerHTML = "Veuillez saisir une adresse mail valide";
 
-        // VALIDATION DU PANIER
+        // Validation du panier
     } else if (cart < 1 || cart == null) {
         event.preventDefault();
         alert("Votre panier est vide");
@@ -107,13 +109,13 @@ form.addEventListener("submit", function(event) {
     } else {
         event.preventDefault();
 
-        // ENREGISTREMENT DU FORMULAIRE DANS L'API
+        // Enregistrement du formulaire dans l'API
         let products = [];
-        for (var i = 0; i < cart.length; i++) {
-            products.push(cart[i].id);
+        for (let  k= 0; k < cart.length; k++) {
+            products.push(cart[k].id); // Envoi des id dans la variable products
         };
 
-        // OBJET CONTACT
+        // Objet contact
         const commandeUser = {
             contact: {},
             products: products,
@@ -126,7 +128,7 @@ form.addEventListener("submit", function(event) {
             email: email.value
         };
 
-        // INFOS A ENVOYER DANS L'API
+        // Infos à envoyer dans l'API
         const optionsFetch = {
             headers: {
                 'Content-type': 'application/json',

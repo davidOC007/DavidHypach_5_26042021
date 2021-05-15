@@ -6,6 +6,8 @@ const attributes = document.getElementById("produit")
 
 const productList = 'http://localhost:3000/api/cameras'
 
+// Requête fetch et récupération de l'ID du produit - Affichage du produit dans la page
+
 fetch(productList + '/' + itemId)
     .then(response =>
         response.json())
@@ -22,7 +24,7 @@ fetch(productList + '/' + itemId)
                     <label class="labelLentilles" for="lentilles">Votre choix de lentille:</label><br/>
                     <select name="lentilles" id="lentilles"></select> 
                 </div>
-                        <p><strong>Prix total</strong> : <span id="totalPrice">${data.price /100}</span> .00€</p>
+                        <p><strong>Prix unitaire</strong> : <span id="totalPrice">${data.price /100}</span> .00€</p>
                         <button id="addButton" type="button" class="btn btn-secondary">Ajouter au panier</button>
                     </form>   
                 </div>
@@ -30,7 +32,7 @@ fetch(productList + '/' + itemId)
                 `;
 
 
-        //Ajout du choix de la lentille
+        //Ajout du choix de l'option
         let lenses = document.getElementById("lentilles")
         data.lenses.forEach(lens => {
             let option = document.createElement("option")
@@ -38,16 +40,16 @@ fetch(productList + '/' + itemId)
             lenses.appendChild(option);
         })
 
-
-
-        const addCart = document.getElementById("addButton");
-        addCart.addEventListener("click", function() {
+        // Ajout de l'écoute évènement - click sur le bouton
+        const button = document.getElementById("addButton");
+        button.addEventListener("click", function() {
             addToCart()
         });
 
+        // Ajout du produit au panier
         function addToCart() {
 
-            // Variable produit 
+            // Variable produit sélectionné 
             let selectedItem = {
                 name: data.name,
                 id: data._id,
@@ -57,32 +59,30 @@ fetch(productList + '/' + itemId)
                 total: data.price / 100
             };
 
-            let panier = JSON.parse(localStorage.getItem("monPanier"));
-            if (!panier) {
-                console.log(panier = [])
+            let cart = JSON.parse(localStorage.getItem("cart"));
+            if (!cart) {
+                console.log(cart = [])
             }; //initialisation du panier s'il n'existe pas encore
 
 
-
             if (selectedItem) {
-                panier.push(selectedItem);
-                localStorage.setItem("monPanier", JSON.stringify(panier));
-                alert("Votre produit a bien été ajouté au panier")
+                cart.push(selectedItem);
+                localStorage.setItem("cart", JSON.stringify(cart));
+               alert("Votre produit a bien été ajouté au panier")
+              
 
 
                 // Nombre d'articles dans le panier
                 const itemsInCart = () => {
-                    let nombreArticleAjoutPanier = document.getElementById("navcartcounter");
-                    if (panier == null) {
-                        nombreArticleAjoutPanier.innerHTML = "(" + "0" + ")";
+                    let nbrProductInCart = document.getElementById("navcartcounter");
+                    if (cart == null) {
+                        nbrProductInCart.innerHTML = "(" + "0" + ")";
                     } else {
-                        nombreArticleAjoutPanier.innerHTML = "(" + panier.length + ")";
+                        nbrProductInCart.innerHTML = "(" + cart.length + ")";
                     };
                 };
                 itemsInCart();
 
             };
-
-
         }
     });
