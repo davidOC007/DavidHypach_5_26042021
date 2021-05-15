@@ -1,11 +1,11 @@
-let panier = JSON.parse(localStorage.getItem("monPanier"));
+let cart = JSON.parse(localStorage.getItem("cart"));
 
 const itemsInCart = () => {
-    let nombreArticleAjoutPanier = document.getElementById("navcartcounter");
-    if (panier == null) {
-        nombreArticleAjoutPanier.innerHTML = "(" + "0" + ")";
+    let nbrProductInCart = document.getElementById("navcartcounter");
+    if (cart == null) {
+        nbrProductInCart.innerHTML = "(" + "0" + ")";
     } else {
-        nombreArticleAjoutPanier.innerHTML = "(" + panier.length + ")";
+        nbrProductInCart.innerHTML = "(" + cart.length + ")";
     };
 };
 itemsInCart();
