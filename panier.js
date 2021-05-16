@@ -1,4 +1,4 @@
-const displayCart = document.getElementById("panierachat")
+const displayCart = document.getElementById("cartContent")
 let cart = JSON.parse(localStorage.getItem("cart"));
 
 // Affichage des produits dans le panier s'il n'est pas vide
@@ -15,7 +15,7 @@ for (let i = 0; i < cart.length; i++) {
                 </div>
                 <div class="col-lg-3">
                     <h2 class="mb-2">${cart[i].name}</h2>
-                    <p class="prixProduitPanier" id='${cart[i].name}total'><strong>Prix unitaire : <span class='chiffre-prix'>${cart[i].price.toFixed(2)} €</span></strong></p>    
+                    <p id='${cart[i].name}total'><strong>Prix unitaire : <span class='chiffre-prix'>${cart[i].price.toFixed(2)} €</span></strong></p>    
                     <i class="removeProduct fas fa-trash fa" data-id="${i}"></i>
                     </div>             
             </div>     
@@ -47,7 +47,7 @@ function removeProduct(id) {
 }
 
 document.querySelectorAll(".removeProduct").forEach(deleteButton => {
-    deleteButton.addEventListener('click', () => removeProduct(deleteButton.dataset.id))
+    deleteButton.addEventListener("click", () => removeProduct(deleteButton.dataset.id))
 });
 
 // Total de la commande
@@ -116,11 +116,11 @@ form.addEventListener("submit", function(event) {
         };
 
         // Objet contact
-        const commandeUser = {
+        const orderData = {
             contact: {},
             products: products,
         }
-        commandeUser.contact = {
+        orderData.contact = {
             firstName: firstName.value,
             lastName: lastName.value,
             address: address.value,
@@ -131,14 +131,16 @@ form.addEventListener("submit", function(event) {
         // Infos à envoyer dans l'API
         const optionsFetch = {
             headers: {
-                'Content-type': 'application/json',
+                "Content-type": "application/json",
             },
             method: "POST",
-            body: JSON.stringify(commandeUser),
+            body: JSON.stringify(orderData),
         }
-        console.log(commandeUser)
-        fetch("http://localhost:3000/api/cameras/order", optionsFetch).then(function(response) {
-            response.json().then(function(text) {
+        
+        fetch("http://localhost:3000/api/cameras/order", optionsFetch)
+            .then(function(response) {
+                response.json()
+            .then(function(text) {
                 console.log(text.orderId);
                 window.location = `confirmation.html?id=${text.orderId}&name=${firstName.value}&prix=${totalPrice}`
             });

@@ -4,11 +4,11 @@ const itemId = params.get("id");
 
 const attributes = document.getElementById("produit")
 
-const productList = 'http://localhost:3000/api/cameras'
+const productList = "http://localhost:3000/api/cameras"
 
 // Requête fetch et récupération de l'ID de l'article - Affichage du produit dans la page
 
-fetch(productList + '/' + itemId)
+fetch(productList + "/" + itemId)
     .then(response =>
         response.json())
     .then(data => {
@@ -21,8 +21,8 @@ fetch(productList + '/' + itemId)
                     <p>${data.description}</p>
                     <form>
                     <div class="col-auto my-1 pb-5 mt-4">
-                    <label class="labelLentilles" for="lentilles">Votre choix de lentille:</label><br/>
-                    <select name="lentilles" id="lentilles"></select> 
+                    <label class="lentilles" for="lentilles">Votre choix de lentille:</label><br/>
+                    <select name="lenses" id="lenses"></select> 
                 </div>
                         <p><strong>Prix unitaire</strong> : <span id="totalPrice">${data.price /100}</span> .00€</p>
                         <button id="addButton" type="button" class="btn btn-secondary">Ajouter au panier</button>
@@ -33,7 +33,7 @@ fetch(productList + '/' + itemId)
 
 
         //Ajout du choix de l'option
-        let lenses = document.getElementById("lentilles")
+        let lenses = document.getElementById("lenses")
         data.lenses.forEach(lens => {
             let option = document.createElement("option")
             option.textContent = lens;
