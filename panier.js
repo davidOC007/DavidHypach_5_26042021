@@ -1,4 +1,4 @@
-const displayCart = document.getElementById("panierachat")
+const displayCart = document.getElementById("cartContent");
 let cart = JSON.parse(localStorage.getItem("cart"));
 
 // Affichage des produits dans le panier s'il n'est pas vide
@@ -115,11 +115,11 @@ form.addEventListener("submit", function(event) {
         };
 
         // Objet contact
-        const commandeUser = {
+        const orderData = {
             contact: {},
             products: products,
         }
-        commandeUser.contact = {
+        orderData.contact = {
             firstName: firstName.value,
             lastName: lastName.value,
             address: address.value,
@@ -133,11 +133,13 @@ form.addEventListener("submit", function(event) {
                 'Content-type': 'application/json',
             },
             method: "POST",
-            body: JSON.stringify(commandeUser),
+            body: JSON.stringify(orderData),
         }
-        console.log(commandeUser)
-        fetch("http://localhost:3000/api/cameras/order", optionsFetch).then(function(response) {
-            response.json().then(function(text) {
+        console.log(orderData)
+        fetch("http://localhost:3000/api/cameras/order", optionsFetch)
+            .then(function(response) {
+                response.json()
+            .then(function(text) {
                 console.log(text.orderId);
                 window.location = `confirmation.html?id=${text.orderId}&name=${firstName.value}&prix=${totalPrice}`
             });
